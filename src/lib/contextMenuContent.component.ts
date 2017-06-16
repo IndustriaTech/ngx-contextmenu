@@ -50,11 +50,11 @@ export interface MouseLocation {
         <li *ngFor="let menuItem of menuItems" [class.disabled]="!isMenuItemEnabled(menuItem)"
             [class.divider]="menuItem.divider" [class.dropdown-divider]="useBootstrap4 && menuItem.divider"
             [attr.role]="menuItem.divider ? 'separator' : undefined">
-          <a *ngIf="!menuItem.divider && !menuItem.passive" href [class.dropdown-item]="useBootstrap4"
+          <span *ngIf="!menuItem.divider && !menuItem.passive" [class.dropdown-item]="useBootstrap4"
             [class.disabled]="useBootstrap4 && !isMenuItemEnabled(menuItem)" [class.hasSubMenu]="!!menuItem.subMenu"
             (click)="onMenuItemSelect(menuItem, $event)" (mouseenter)="openSubMenu(menuItem, $event)">
             <ng-template [ngTemplateOutlet]="menuItem.template" [ngOutletContext]="{ $implicit: item }"></ng-template>
-          </a>
+          </span>
 
           <span (click)="stopEvent($event)" (contextmenu)="stopEvent($event)" class="passive"
                 *ngIf="!menuItem.divider && menuItem.passive" [class.dropdown-item]="useBootstrap4"
@@ -233,7 +233,6 @@ export class ContextMenuContentComponent implements OnInit, OnDestroy, AfterView
 
   public onMenuItemSelect(menuItem: ContextMenuItemDirective, event: MouseEvent): void {
     event.preventDefault();
-    event.stopPropagation();
     this.openSubMenu(menuItem, event);
     if (!menuItem.subMenu) {
       menuItem.triggerExecute(this.item, event);
