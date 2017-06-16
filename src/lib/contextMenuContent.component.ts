@@ -52,12 +52,12 @@ export interface MouseLocation {
             [class.divider]="menuItem.divider" [class.dropdown-divider]="useBootstrap4 && menuItem.divider"
             [class.active]="i === activeMenuItemIndex && isMenuItemEnabled(menuItem)"
             [attr.role]="menuItem.divider ? 'separator' : undefined">
-          <a *ngIf="!menuItem.divider && !menuItem.passive" href [class.dropdown-item]="useBootstrap4"
+          <span *ngIf="!menuItem.divider && !menuItem.passive" [class.dropdown-item]="useBootstrap4"
             [class.active]="i === activeMenuItemIndex && isMenuItemEnabled(menuItem)"
             [class.disabled]="useBootstrap4 && !isMenuItemEnabled(menuItem)" [class.hasSubMenu]="!!menuItem.subMenu"
             (click)="onMenuItemSelect(menuItem, $event)" (mouseenter)="openSubMenu(menuItem, $event)">
             <ng-template [ngTemplateOutlet]="menuItem.template" [ngOutletContext]="{ $implicit: item }"></ng-template>
-          </a>
+          </span>
 
           <span (click)="stopEvent($event)" (contextmenu)="stopEvent($event)" class="passive"
                 *ngIf="!menuItem.divider && menuItem.passive" [class.dropdown-item]="useBootstrap4"
