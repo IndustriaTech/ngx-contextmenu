@@ -290,9 +290,18 @@ You can optionally set focus on the context menu whenever it opens.  This enable
 export class AppModule {}
 ```
 
-### Keyboard navigation
+## Keyboard navigation
 
-If you have `autoFocus` enabled, you can use keyboard shortcuts to navigate the context menu. `tab` - focus next menu item, `shift-tab` - focus previous menu item, `enter` - execute menu item or open sub menu, `esc` - close current context menu.
+You can use the keyboard to manipulate the context menu.  Note: Keyboard navigation should be used in conjunction with `autoFocus`, since key events are only captured when the context menu is focused.
+
+| Key            | Action                                         |
+|:--------------:|------------------------------------------------|
+| ArrowDown      | Move to next menu item (wrapping)              |
+| ArrowUp        | Move to previous menu item (wrapping)          |
+| ArrowRight     | Open submenu of current menu item if present   |
+| ArrowLeft      | Close current menu unless already at root menu |
+| Enter \| Space | Open submenu or execute current menu item      |
+| Esc            | Close current menu                             |
 
 ## Disable Context Menu
 
@@ -321,7 +330,7 @@ The items in the context menu are completely controlled by the `contextMenuActio
 <context-menu #myContextMenu>
   <ng-template *ngFor="let action of contextMenuActions" contextMenuItem let-item
     [visible]="action.visible" [enabled]="action.enabled" [divider]="action.divider"
-    (execute)="action.execute($event.item)">
+    (execute)="action.click($event.item)">
     {{ action.html($event.item) }}
   </ng-template>
 </context-menu>
@@ -333,14 +342,14 @@ The items in the context menu are completely controlled by the `contextMenuActio
 })
 export class MyContextMenuClass {
   public items = [
-      { name: 'John', otherProperty: 'Foo' },
-      { name: 'Joe', otherProperty: 'Bar' }
-  };
+      { name: 'John', otherProperty: 'Foo', type: 'type1' },
+      { name: 'Joe', otherProperty: 'Bar', type: 'type2' }
+  ];
   @ViewChild(ContextMenuComponent) public contextMenu: ContextMenuComponent;
   public contextMenuActions = [
         {
           html: (item) => `Say hi!`,
-          click: (item) => alert('Hi, ' + item.name)
+          click: (item) => alert('Hi, ' + item.name),
           enabled: (item) => true,
           visible: (item) => item.type === 'type1',
         },
